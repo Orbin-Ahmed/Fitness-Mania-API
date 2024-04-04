@@ -1,4 +1,7 @@
+import { getUserBySessionToken } from "db/users";
 import express from "express";
+import expressAsyncHandler from "express-async-handler";
+import { get, identity, merge } from "lodash";
 
 export const errorHandler = (
   err: Error,
@@ -43,3 +46,46 @@ export const errorHandler = (
       break;
   }
 };
+
+export const isAuthenticated = expressAsyncHandler(
+  async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    const { sessionToken } = req.body;
+    if (!sessionToken) {
+      res.status(403);
+      throw new Error("Session value is mendatory!");
+    }
+
+    const user = await getUserBySessionToken(sessionToken);
+    if (!user) {
+      res.status(403);
+      throw new Error("You are not permitted to this operation!");
+    }
+
+    merge(req, { identity: user });
+    return next();
+  }
+);
+
+export const isOwner = expressAsyncHandler(
+  async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    const { id } = req.params;
+    const currentUserId = get(req, "identity._id") as string;
+    if (!currentUserId) {
+      res.status(403);
+      throw new Error("You are not permitted to this operation!");
+    }
+    if (currentUserId.toString() !== id) {
+      res.status(403);
+      throw new Error("You are not permitted to this operation!");
+    }
+    next();
+  }
+);
