@@ -1,7 +1,7 @@
-import { getUserBySessionToken } from "db/users";
+import { getUserBySessionToken } from "../db/users";
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
-import { get, identity, merge } from "lodash";
+import { get, merge } from "lodash";
 
 export const errorHandler = (
   err: Error,
