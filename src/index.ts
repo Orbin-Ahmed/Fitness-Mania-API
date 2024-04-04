@@ -5,7 +5,7 @@ import compression from "compression";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
-import { errorHandler } from "./helpers";
+import { errorHandler } from "./middleware";
 import router from "./router";
 
 const app = express();
