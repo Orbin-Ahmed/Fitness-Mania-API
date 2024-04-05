@@ -40,25 +40,27 @@ exports.login = (0, express_async_handler_1.default)(async (req, res) => {
         res.status(400);
         throw new Error("All field is mendatory!");
     }
-    const user = await (0, users_1.getUserByEmail)(email).select(`+authentication.salt + authentication.password`);
-    if (!user) {
+    const userObj = await (0, users_1.getUserByEmail)(email);
+    const authenticationData = await (0, users_1.getUserByEmail)(email).select(`+authentication.salt + authentication.password`);
+    if (!userObj) {
         res.status(400);
         throw new Error("Email or password is invalid!");
     }
-    const expectedHash = (0, helpers_1.authentication)(user.authentication.salt, password);
-    if (expectedHash !== user.authentication.password) {
+    const expectedHash = (0, helpers_1.authentication)(authenticationData.authentication.salt, password);
+    if (expectedHash !== authenticationData.authentication.password) {
         res.status(400);
         throw new Error("Email or password is invalid!");
     }
     const salt = (0, helpers_1.random)();
-    user.authentication.sessionToken = (0, helpers_1.authentication)(salt, user._id.toString());
-    await user.save();
+    authenticationData.authentication.sessionToken = (0, helpers_1.authentication)(salt, authenticationData._id.toString());
+    await authenticationData.save();
+    const sesstionToken = authenticationData.authentication.sessionToken;
     res
         .status(200)
         .json({
-        username: user.username,
-        id: user._id,
-        sessionToken: user.authentication.sessionToken,
+        username: userObj.username,
+        id: userObj._id,
+        sessionToken: sesstionToken,
     })
         .end();
 });

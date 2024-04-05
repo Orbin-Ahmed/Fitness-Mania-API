@@ -44,33 +44,38 @@ export const login = asyncHandler(
       res.status(400);
       throw new Error("All field is mendatory!");
     }
+    const userObj = await getUserByEmail(email);
 
-    const user = await getUserByEmail(email).select(
+    const authenticationData = await getUserByEmail(email).select(
       `+authentication.salt + authentication.password`
     );
-    if (!user) {
+    if (!userObj) {
       res.status(400);
       throw new Error("Email or password is invalid!");
     }
 
-    const expectedHash = authentication(user.authentication.salt, password);
-    if (expectedHash !== user.authentication.password) {
+    const expectedHash = authentication(
+      authenticationData.authentication.salt,
+      password
+    );
+    if (expectedHash !== authenticationData.authentication.password) {
       res.status(400);
       throw new Error("Email or password is invalid!");
     }
 
     const salt = random();
-    user.authentication.sessionToken = authentication(
+    authenticationData.authentication.sessionToken = authentication(
       salt,
-      user._id.toString()
+      authenticationData._id.toString()
     );
-    await user.save();
+    await authenticationData.save();
+    const sesstionToken = authenticationData.authentication.sessionToken;
     res
       .status(200)
       .json({
-        username: user.username,
-        id: user._id,
-        sessionToken: user.authentication.sessionToken,
+        username: userObj.username,
+        id: userObj._id,
+        sessionToken: sesstionToken,
       })
       .end();
   }
