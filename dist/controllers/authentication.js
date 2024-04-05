@@ -56,7 +56,7 @@ exports.login = (0, express_async_handler_1.default)(async (req, res) => {
     res
         .status(200)
         .json({
-        name: user.username,
+        username: user.username,
         id: user._id,
         sessionToken: user.authentication.sessionToken,
     })
