@@ -28,10 +28,11 @@ exports.register = (0, express_async_handler_1.default)(async (req, res) => {
             password: (0, helpers_1.authentication)(salt, password),
         },
     });
-    res
-        .status(201)
-        .json({ message: { username: user.username, email: user.email } })
-        .end();
+    // res
+    //   .status(201)
+    //   .json({ message: { username: user.username, email: user.email } })
+    //   .end();
+    (0, exports.login)(req, res, () => { });
 });
 // Login controller
 exports.login = (0, express_async_handler_1.default)(async (req, res) => {

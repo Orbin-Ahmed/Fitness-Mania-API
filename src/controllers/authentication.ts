@@ -28,10 +28,11 @@ export const register = asyncHandler(
         password: authentication(salt, password),
       },
     });
-    res
-      .status(201)
-      .json({ message: { username: user.username, email: user.email } })
-      .end();
+    // res
+    //   .status(201)
+    //   .json({ message: { username: user.username, email: user.email } })
+    //   .end();
+    login(req, res, () => {});
   }
 );
 
