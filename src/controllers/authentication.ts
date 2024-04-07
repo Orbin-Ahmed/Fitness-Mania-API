@@ -39,6 +39,7 @@ export const register = asyncHandler(
 // Login controller
 export const login = asyncHandler(
   async (req: express.Request, res: express.Response) => {
+    console.log("login body", req.body);
     const { email, password } = req.body;
 
     if (!password || !email) {
@@ -86,6 +87,7 @@ export const login = asyncHandler(
 
 export const logout = asyncHandler(
   async (req: express.Request, res: express.Response) => {
+    console.log("logout body", req.body);
     const { sessionToken } = req.body;
     if (!sessionToken) {
       res.status(400);
@@ -97,6 +99,7 @@ export const logout = asyncHandler(
       res.status(400);
       throw new Error("Session is invalid!");
     }
+    console.log(sessionToken);
 
     user.authentication.sessionToken = "";
     await user.save();
