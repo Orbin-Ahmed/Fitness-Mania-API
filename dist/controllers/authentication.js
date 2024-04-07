@@ -36,7 +36,6 @@ exports.register = (0, express_async_handler_1.default)(async (req, res) => {
 });
 // Login controller
 exports.login = (0, express_async_handler_1.default)(async (req, res) => {
-    console.log("login body", req.body);
     const { email, password } = req.body;
     if (!password || !email) {
         res.status(400);
@@ -68,7 +67,6 @@ exports.login = (0, express_async_handler_1.default)(async (req, res) => {
 });
 // Logout controller
 exports.logout = (0, express_async_handler_1.default)(async (req, res) => {
-    console.log("logout body", req.body);
     const { sessionToken } = req.body;
     if (!sessionToken) {
         res.status(400);
@@ -79,7 +77,6 @@ exports.logout = (0, express_async_handler_1.default)(async (req, res) => {
         res.status(400);
         throw new Error("Session is invalid!");
     }
-    console.log(sessionToken);
     user.authentication.sessionToken = "";
     await user.save();
     res.status(200).json({ message: "User logout successfully!" }).end();
