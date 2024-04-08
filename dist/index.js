@@ -15,7 +15,7 @@ const router_1 = __importDefault(require("./router"));
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:5173", "https://fitness-mania-phi.vercel.app/"],
+    origin: ["http://localhost:5173", "https://fitness-mania-phi.vercel.app"],
     credentials: true,
 }));
 app.use((0, compression_1.default)());
