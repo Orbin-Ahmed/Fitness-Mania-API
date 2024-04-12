@@ -9,7 +9,7 @@ import { errorHandler } from "./middleware";
 import router from "./router";
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 
 app.use(
   cors({
@@ -20,10 +20,9 @@ app.use(
 
 app.use(compression());
 app.use(bodyParser.json());
+app.use("/static", express.static("public"));
 
-const server = http.createServer(app);
-
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server is running at ${port}`);
 });
 

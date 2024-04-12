@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const http_1 = __importDefault(require("http"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const compression_1 = __importDefault(require("compression"));
 const cors_1 = __importDefault(require("cors"));
@@ -13,15 +12,15 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const middleware_1 = require("./middleware");
 const router_1 = __importDefault(require("./router"));
 const app = (0, express_1.default)();
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 app.use((0, cors_1.default)({
     origin: ["http://localhost:5173", "https://fitness-mania-phi.vercel.app"],
     credentials: true,
 }));
 app.use((0, compression_1.default)());
 app.use(body_parser_1.default.json());
-const server = http_1.default.createServer(app);
-server.listen(port, () => {
+app.use("/static", express_1.default.static("public"));
+app.listen(port, () => {
     console.log(`Server is running at ${port}`);
 });
 app.get("/", (req, res) => {
