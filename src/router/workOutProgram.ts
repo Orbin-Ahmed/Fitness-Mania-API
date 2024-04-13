@@ -1,35 +1,15 @@
 import express from "express";
-import { createWorkout } from "../controllers/workOutProgram";
-import multer, { FileFilterCallback } from "multer";
+import { createWorkout, getWorkouts } from "../controllers/workOutProgram";
+import multer from "multer";
+import { storage, fileFilter } from "../utils/multer";
 
-type DestinationCallback = (error: Error | null, destination: string) => void;
-type FileNameCallback = (error: Error | null, filename: string) => void;
-
-// Multer setup
-const storage = multer.diskStorage({
-  destination: function (
-    req: express.Request,
-    file: Express.Multer.File,
-    cb: DestinationCallback
-  ) {
-    cb(null, "/public/images/");
-  },
-  filename: function (
-    req: express.Request,
-    file: Express.Multer.File,
-    cb: DestinationCallback
-  ) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix);
-  },
+// initialize multer
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
 });
 
-const upload = multer({ storage: storage });
-const cpUpload = upload.fields([
-  { name: "main_image", maxCount: 1 },
-  { name: "sub_images", maxCount: 5 },
-]);
-
 export default (router: express.Router) => {
-  router.post("/workOut", cpUpload, createWorkout);
+  router.post("/workout", upload.array("images", 6), createWorkout);
+  router.get("/workout", getWorkouts);
 };

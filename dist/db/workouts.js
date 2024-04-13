@@ -6,16 +6,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorkoutModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const WorkoutSchema = new mongoose_1.default.Schema({
+    id: {
+        type: Number,
+        primaryKey: true,
+        autoIncrement: true,
+        unique: true,
+    },
     name: { type: String, required: true },
     description: { type: String, required: true },
-    main_image: { type: String, required: true },
-    total_joined: { type: Number, required: false },
+    main_image: { data: Buffer, contentType: String },
+    total_joined: { type: Number },
     sub_images: [
         {
-            name: { type: String, required: true },
-            time: { type: Number, required: true },
-            daysToComplete: { type: Number, required: true },
-            image: { type: String, required: true },
+            name: { type: String },
+            time: { type: Number },
+            daysToComplete: { type: Number },
+            image: { data: Buffer, contentType: String },
         },
     ],
 });
