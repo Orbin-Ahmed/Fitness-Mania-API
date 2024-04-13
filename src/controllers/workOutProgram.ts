@@ -4,47 +4,6 @@ import { WorkoutModel } from "../db/workouts";
 const path = require("path");
 const fs = require("fs");
 
-// export const createWorkout = asyncHandler(
-//   async (req: express.Request, res: express.Response) => {
-//     const { name, description } = req.body;
-//     if (!name || !description) {
-//       res.status(400);
-//       throw new Error("Missing required fields!");
-//     }
-//     const files = req.files as Express.Multer.File[];
-//     const subImageFiles = files.slice(1);
-//     const validatedSubImages = subImageFiles.map((subImage) => {
-//       return {
-//         image: {
-//           data: fs.readFileSync(
-//             path.join("./public/images/" + subImage.filename)
-//           ),
-//           contentType: subImage.mimetype,
-//         },
-//       };
-//     });
-//     const newWorkout = new WorkoutModel({
-//       name,
-//       description,
-//       main_image: {
-//         data: fs.readFileSync(
-//           path.join("./public/images/" + files[0].filename)
-//         ),
-//         contentType: files[0].mimetype,
-//       },
-//       sub_images: validatedSubImages,
-//     });
-
-//     try {
-//       const savedWorkout = await newWorkout.save();
-//       res.status(201).json(savedWorkout).end();
-//     } catch (err) {
-//       res.status(400);
-//       throw new Error("Error creating workout");
-//     }
-//   }
-// );
-
 export const createWorkout = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { name, description } = req.body;
@@ -57,7 +16,9 @@ export const createWorkout = asyncHandler(
     const validatedSubImages = subImageFiles.map((subImage) => {
       return {
         image: {
-          data: subImage.filename,
+          data: fs.readFileSync(
+            path.join("./public/images/" + subImage.filename)
+          ),
           contentType: subImage.mimetype,
         },
       };
@@ -66,7 +27,9 @@ export const createWorkout = asyncHandler(
       name,
       description,
       main_image: {
-        data: files[0].filename,
+        data: fs.readFileSync(
+          path.join("./public/images/" + files[0].filename)
+        ),
         contentType: files[0].mimetype,
       },
       sub_images: validatedSubImages,
