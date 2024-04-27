@@ -6,12 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LeadModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const LeadSchema = new mongoose_1.default.Schema({
-    id: {
-        type: Number,
-        primaryKey: true,
-        autoIncrement: true,
-        unique: true,
-    },
     name: { type: String, required: true },
     email: { type: String, required: true },
 });

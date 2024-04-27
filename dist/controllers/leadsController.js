@@ -21,8 +21,9 @@ exports.createLead = (0, express_async_handler_1.default)(async (req, res) => {
         res.status(201).json(savedLead).end();
     }
     catch (err) {
+        console.log(err);
         res.status(400);
-        throw new Error("Error creating workout");
+        throw new Error("Error creating lead!");
     }
 });
 exports.getLeads = (0, express_async_handler_1.default)(async (req, res) => {

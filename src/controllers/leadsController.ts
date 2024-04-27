@@ -19,8 +19,9 @@ export const createLead = asyncHandler(
       const savedLead = await newLead.save();
       res.status(201).json(savedLead).end();
     } catch (err) {
+      console.log(err);
       res.status(400);
-      throw new Error("Error creating workout");
+      throw new Error("Error creating lead!");
     }
   }
 );
